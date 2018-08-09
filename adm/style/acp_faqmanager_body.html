@@ -1,0 +1,114 @@
+<!-- INCLUDE overall_header.html -->
+
+<h1>{L_FM_FAQ_MANAGER}</h1>
+<!-- IF S_DISPLAY_CAT_LIST -->
+    <table cellspacing="1"><col class="row1" /><col class="row1" /><col class="row2" />
+        <thead>
+            <tr>
+                <th>{L_FM_CAT_TITLE}</th>
+                <th>{L_FM_LANG}</th>
+                <th>{L_ACTION}</th>
+            </tr>
+        </thead>
+        <tbody>
+        <!-- BEGIN categories -->
+        {TITLE}
+            <tr>
+                <td>{categories.TITLE}</td>
+                <td>{categories.LANG}</td>
+                <td style="vertical-align: top; width: 100px; text-align: center; white-space: nowrap;">
+                    <!-- IF categories.S_FIRST_ROW && not categories.S_LAST_ROW -->
+                        {ICON_MOVE_UP_DISABLED}
+                        <a href="{categories.U_MOVE_DOWN}" data-ajax="row_down">{ICON_MOVE_DOWN}</a>
+                    <!-- ELSEIF not categories.S_FIRST_ROW && not categories.S_LAST_ROW-->
+                        <a href="{categories.U_MOVE_UP}" data-ajax="row_up">{ICON_MOVE_UP}</a>
+                        <a href="{categories.U_MOVE_DOWN}" data-ajax="row_down">{ICON_MOVE_DOWN}</a>
+                    <!-- ELSEIF categories.S_LAST_ROW && not categories.S_FIRST_ROW -->
+                        <a href="{categories.U_MOVE_UP}" data-ajax="row_up">{ICON_MOVE_UP}</a>
+                        {ICON_MOVE_DOWN_DISABLED}
+                    <!-- ELSE -->
+                        {ICON_MOVE_UP_DISABLED}
+                        {ICON_MOVE_DOWN_DISABLED}
+                    <!-- ENDIF -->
+                    <a href="{categories.U_EDIT}">{ICON_EDIT}</a>
+                    <a href="{categories.U_DELETE}">{ICON_DELETE}</a>
+                </td>
+            </tr>
+        <!-- BEGINELSE -->
+            <tr>
+                <td class="row1" colspan="5" style="text-align: center;">{L_FM_NO_CATEGORIES}</td>
+            </tr>
+        <!-- END categories -->
+        </tbody>
+    </table>
+    <form id="cat_add" method="post" action="{U_ACTION}">
+        <fieldset class="quick">
+            <input type="hidden" name="action" value="cat_add" />
+            <input type="text" name="faq_question" value="" maxlength="255" />
+            <input class="button2" name="cat_add" type="submit" value="{L_FM_CAT_ADD}" />
+            {S_FORM_TOKEN}
+        </fieldset>
+    </form>
+
+<form id="read_defaults" method="post" action="{U_ACTION}">
+    <fieldset>
+        {L_FM_DEFAULTS_EXPLAIN}{L_COLON} <input class="button1" type="submit" name="read_defaults" value="{L_SUBMIT}" />
+        {S_FORM_TOKEN}
+    </fieldset>
+</form>
+<!-- ENDIF -->
+
+<!-- IF S_DISPLAY_CATEGORY_CONTENT -->
+    <form id="cat_edit" method="post" action="{U_ACTION}">
+        <input type="hidden" name="action" value="cat_save" />
+        <input type="hidden" name="cat_id" value="{CAT_ID}" />
+        <input type="hidden" name="curlang" value="{CAT_LANG}" />
+        <fieldset>
+            <dl>
+                <dt><label for="cat_title">{L_FM_CAT_TITLE}{L_COLON}</label></dt>
+                <dd><input type="text" id="cat_title" name="cat_title" value="{CAT_TITLE}" style="width: 90%" /></dd>
+                <dt><label for="cat_lang">{L_FM_LANG}{L_COLON}</label></dt>
+                <dd><select id="cat_lang" name="cat_lang">{S_LANG_OPTIONS}</select></dd>
+            </dl>
+        </fieldset>
+
+        <!-- BEGIN faq -->
+            <fieldset id="faq{faq.ID}">
+                <dl>
+                    <dt><label for="{faq.ID}_faq_question">{L_FM_QUESTION}{L_COLON}</label></dt>
+                    <dd>
+                        <input type="text" id="{faq.ID}_faq_question" name="{faq.ID}_faq_question" value="{faq.FAQ_QUESTION}" style="width: 90%"/>
+                        <a href="{faq.U_DELETE}">{ICON_DELETE}</a>
+                    </dd>
+                </dl>
+                <dl class="answer_container" id="{faq.ID}_answer_container">
+                    <dt><label for="{faq.ID}_faq_answer">{L_FM_ANSWER}{L_COLON}</label></dt>
+                    <dd>
+                        <textarea id="{faq.ID}_faq_answer" name="{faq.ID}_faq_answer" rows="8" cols="45">{faq.FAQ_ANSWER}</textarea>
+                    </dd>
+                </dl>
+            </fieldset>
+        <!-- END faq -->
+        <fieldset id="newfaq">
+            <dl>
+                <dt><label for="new_faq_question">{L_FM_QUESTION_ADD}{L_COLON}</label></dt>
+                    <dd>
+                        <input type="text" id="new_faq_question" name="new_faq_question" value="" style="width: 90%"/>
+                    </dd>
+            </dl>
+            <dl class="answer_container" id="new_faq_answer_container">
+                <dt><label for="new_faq_answer">{L_FM_ANSWER}{L_COLON}</label></dt>
+                <dd>
+                    <textarea id="new_faq_answer" name="new_faq_answer" rows="8" cols="45"></textarea>
+                </dd>
+            </dl>
+        </fieldset>
+        <p class="submit-buttons">
+            <input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+            <input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+        </p>
+        {S_FORM_TOKEN}
+    </form>
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

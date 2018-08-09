@@ -1,0 +1,30 @@
+imports:
+    - { resource: parameters.yml }
+
+services:
+    ger.faqmanager.faqpage:
+        class: ger\faqmanager\controller\faqpage
+        arguments:
+            - '@controller.helper'
+            - '@template'
+            - '@user'
+            - '@language'
+            - '@phpbb.help.manager'
+            - '@ger.faqmanager.classes.handler'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            
+    ger.faqmanager.classes.handler:
+        class: ger\faqmanager\classes\handler
+        arguments:
+            - '@dbal.conn'
+            - '%ger.faqmanager.tables.faq_table%'
+
+    ger.faqmanager.listener:
+        class: ger\faqmanager\event\main_listener
+        tags:
+            - { name: event.listener }
+        arguments:
+            - '@template'
+            - '@request'
+            - '@controller.helper'

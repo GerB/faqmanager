@@ -1,0 +1,3 @@
+ger_faqmanager_faqpage:
+    path: /faqpage
+    defaults: { _controller: ger.faqmanager.faqpage:handle }

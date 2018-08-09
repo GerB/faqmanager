@@ -1,0 +1,2 @@
+parameters:
+    ger.faqmanager.tables.faq_table: '%core.table_prefix%faqmgr'
