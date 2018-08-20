@@ -205,11 +205,7 @@ class handler
         $current_order = (int) $this->db->sql_fetchfield('current_order');
         $this->db->sql_freeresult($result);
 
-        if ($current_order == 0 && $order == 'up')
-        {
-            return false;
-        }
-        $switch_order_id = ($order == 'move_down') ?  + 1 : $current_order - 1;
+        $switch_order_id = ($order == 'down') ? $current_order + 1 : $current_order - 1;
         
         $action =  'UPDATE ' . $this->faq_table . 
                 ' SET sort_order = ' . $current_order .

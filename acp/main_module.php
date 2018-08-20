@@ -143,20 +143,43 @@ class main_module
             return false;
         }
         $languages = $this->handler->get_board_langs();
-        foreach ($categories as $cat)
+        
+        $curlang = $categories[0]['lang'];
+        $this->template->assign_vars(array(
+            'S_DISPLAY_CAT_LIST' => true,
+            'S_FIRST_LANG' => $languages[$curlang]['lang_local_name']
+            ));
+                
+        foreach ($categories as $index => $cat)
         {
+            $can_down = false;
+            if (isset($categories[$index+1]['lang']) && ($categories[$index+1]['lang'] == $cat['lang']) )
+            {
+                $can_down = true;
+            }
+            
+            if ($cat['lang'] != $curlang)
+            {
+                $newblock = true;
+                $curlang = $cat['lang'];
+            }
+            else
+            {
+                $newblock = false;
+            }
+            
             $this->template->assign_block_vars('categories', array(
+                'NEWBLOCK'      => $newblock,
                 'ID'            => $cat['faq_id'],
                 'TITLE'         => $cat['faq_question'],
+                'LANG_ISO'         => $cat['lang'],
                 'LANG'          => $languages[$cat['lang']]['lang_local_name'],
-                'U_MOVE_UP'     => $this->u_action . '&amp;action=cat_up&amp;cat_id=' . $cat['faq_id'] . '&amp;hash=' . generate_link_hash('ger_acp_faqmanager'),
-                'U_MOVE_DOWN'   => $this->u_action . '&amp;action=cat_down&amp;cat_id=' . $cat['faq_id'] . '&amp;hash=' . generate_link_hash('ger_acp_faqmanager'),
+                'U_MOVE_UP'     => $newblock ? false : $this->u_action . '&amp;action=cat_up&amp;cat_id=' . $cat['faq_id'] . '&amp;hash=' . generate_link_hash('ger_acp_faqmanager'),
+                'U_MOVE_DOWN'   => $can_down ? $this->u_action . '&amp;action=cat_down&amp;cat_id=' . $cat['faq_id'] . '&amp;hash=' . generate_link_hash('ger_acp_faqmanager') : false,
                 'U_EDIT'        => $this->u_action . '&amp;action=cat_edit&amp;cat_id=' . $cat['faq_id'],
                 'U_DELETE'      => $this->u_action . '&amp;action=cat_del&amp;cat_id=' . $cat['faq_id'],
             ));
-        }
-        $this->template->assign_var('S_DISPLAY_CAT_LIST', true);
-        
+        }       
         return true;
     }
     
