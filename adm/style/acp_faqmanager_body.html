@@ -37,7 +37,7 @@
                     <span class="down-disabled" style="display:none;">{ICON_MOVE_DOWN_DISABLED}</span>
                     <span class="down"><a href="{categories.U_MOVE_DOWN}" data-ajax="row_down">{ICON_MOVE_DOWN}</a></span>
                     <a href="{categories.U_EDIT}">{ICON_EDIT}</a>
-                    <a href="{categories.U_DELETE}">{ICON_DELETE}</a>
+                    <a href="{categories.U_DELETE}" data-ajax="row_delete">{ICON_DELETE}</a>
                 </td>
             </tr>
             
@@ -59,7 +59,7 @@
 
 <form id="read_defaults" method="post" action="{U_ACTION}">
     <fieldset>
-        {L_FM_DEFAULTS_EXPLAIN}{L_COLON} <input class="button1" type="submit" name="read_defaults" value="{L_SUBMIT}" />
+        {L_FM_DEFAULTS_IMPORT}{L_COLON} <input class="button1" type="submit" name="read_defaults" value="{L_SUBMIT}" />
         {S_FORM_TOKEN}
     </fieldset>
 </form>
@@ -78,24 +78,29 @@
                 <dd><select id="cat_lang" name="cat_lang">{S_LANG_OPTIONS}</select></dd>
             </dl>
         </fieldset>
-
-        <!-- BEGIN faq -->
-            <fieldset id="faq{faq.ID}">
-                <dl>
-                    <dt><label for="{faq.ID}_faq_question">{L_FM_QUESTION}{L_COLON}</label></dt>
-                    <dd>
-                        <input type="text" id="{faq.ID}_faq_question" name="{faq.ID}_faq_question" value="{faq.FAQ_QUESTION}" style="width: 90%"/>
-                        <a href="{faq.U_DELETE}">{ICON_DELETE}</a>
-                    </dd>
-                </dl>
-                <dl class="answer_container" id="{faq.ID}_answer_container">
-                    <dt><label for="{faq.ID}_faq_answer">{L_FM_ANSWER}{L_COLON}</label></dt>
-                    <dd>
-                        <textarea id="{faq.ID}_faq_answer" name="{faq.ID}_faq_answer" rows="8" cols="45">{faq.FAQ_ANSWER}</textarea>
-                    </dd>
-                </dl>
-            </fieldset>
-        <!-- END faq -->
+        <div id="currentfaq">
+            <!-- BEGIN faq -->
+                <fieldset id="faq{faq.ID}" class="actions">
+                    <dl>
+                        <dt><label for="{faq.ID}_faq_question">{L_FM_QUESTION}{L_COLON}</label></dt>
+                        <dd>
+                            <input type="text" id="{faq.ID}_faq_question" name="{faq.ID}_faq_question" value="{faq.FAQ_QUESTION}" style="width: 90%"/>
+                            <span class="up-disabled" style="display:none;">{ICON_MOVE_UP_DISABLED}</span>
+                            <span class="up"><a href="{faq.U_MOVE_UP}" data-ajax="faq_up">{ICON_MOVE_UP}</a></span>
+                            <span class="down-disabled" style="display:none;">{ICON_MOVE_DOWN_DISABLED}</span>
+                            <span class="down"><a href="{faq.U_MOVE_DOWN}" data-ajax="faq_down">{ICON_MOVE_DOWN}</a></span>
+                            <a href="{faq.U_DELETE}" data-ajax="faq_delete">{ICON_DELETE}</a>
+                        </dd>
+                    </dl>
+                    <dl class="answer_container" id="{faq.ID}_answer_container">
+                        <dt><label for="{faq.ID}_faq_answer">{L_FM_ANSWER}{L_COLON}</label></dt>
+                        <dd>
+                            <textarea id="{faq.ID}_faq_answer" name="{faq.ID}_faq_answer" rows="8" cols="45">{faq.FAQ_ANSWER}</textarea>
+                        </dd>
+                    </dl>
+                </fieldset>
+            <!-- END faq -->
+        </div>
         <fieldset id="newfaq">
             <dl>
                 <dt><label for="new_faq_question">{L_FM_QUESTION_ADD}{L_COLON}</label></dt>
@@ -117,5 +122,5 @@
         {S_FORM_TOKEN}
     </form>
 <!-- ENDIF -->
-
+<!-- INCLUDEJS @ger_faqmanager/admin.js -->
 <!-- INCLUDE overall_footer.html -->

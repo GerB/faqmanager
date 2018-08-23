@@ -19,5 +19,16 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
-	'FM_FAQ_MANAGER'			=> 'FAQ Manager',
+    'FM_ANSWER'                     => 'Answer',
+    'FM_CAT_ADD'                    => 'Add category',
+    'FM_CAT_DELETED'                => 'Category with children deleted',
+    'FM_CAT_TITLE'                  => 'Category title',
+    'FM_CHILDREN_WILL_BE_DELETED'	=> 'All entries within this category will also be deleted!',
+    'FM_DEFAULTS_IMPORT'            => 'Read default language files into FAQ database',
+    'FM_DEFAULTS_EXPLAIN'           => 'If you continue, all existing FAQ entries will be purged from the database. The default <code>./language/**/help/faq.php</code> file will be imported for each enabled language.<br>',
+	'FM_FAQ_MANAGER'                => 'FAQ Manager',
+	'FM_FAQ_DELETED'                => 'FAQ entry deleted',
+	'FM_LANG'                       => 'Language for this category and its entries',
+	'FM_QUESTION'                   => 'Question',
+	'FM_QUESTION_ADD'               => 'Add new question to this category',
 ));

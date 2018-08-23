@@ -21,7 +21,9 @@ class main_module
     public $handler;
     public $template;
     public $request;
+    public $user;
     public $form_key;
+    public $link_hash;
 
     public function main($id, $mode)
 	{
@@ -29,17 +31,20 @@ class main_module
 		global $config, $request, $template, $user, $phpbb_container;
         $this->user = $user;
 		$this->user->add_lang_ext('ger/faqmanager', 'common');
-        $this->handler = $phpbb_container->get('ger.faqmanager.classes.handler');
-        $this->path_helper = $phpbb_container->get('path_helper');
-		$this->tpl_name = 'acp_faqmanager_body';
-		$this->template = $template;
-		$this->request = $request;
+        
+        $this->handler      = $phpbb_container->get('ger.faqmanager.classes.handler');
+        $this->path_helper  = $phpbb_container->get('path_helper');
+		$this->tpl_name     = 'acp_faqmanager_body';
+		$this->template     = $template;
+		$this->request      = $request;
 
-		$this->page_title = $this->user->lang('FM_FAQ_MANAGER');
-        $action		= $this->request->variable('action', '');
-        $cat_id		= $this->request->variable('cat_id', 0);
-        $faq_id		= $this->request->variable('faq_id', 0);
-        $this->form_key = 'ger/faqmanager';
+		$this->page_title   = $this->user->lang('FM_FAQ_MANAGER');
+        $action             = $this->request->variable('action', '');
+        $cat_id             = $this->request->variable('cat_id', 0);
+        $faq_id             = $this->request->variable('faq_id', 0);
+        
+        $this->link_hash    = 'ger_acp_faqmanager';
+        $this->form_key     = 'ger/faqmanager';
 		add_form_key($this->form_key);
         
         // Special action
@@ -53,14 +58,14 @@ class main_module
             else
             {
                 // Confirm
-                confirm_box(false, $this->user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+                confirm_box(false, $this->user->lang['FM_DEFAULTS_EXPLAIN'] . $this->user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
                     'read_defaults'    => '1',
                 )));
             }
         }
         
         
-        if ($this->request->is_ajax() && !check_link_hash($this->request->variable('hash', ''), 'ger_acp_faqmanager'))
+        if ($this->request->is_ajax() && !check_link_hash($this->request->variable('hash', ''), $this->link_hash))
         {
             trigger_error($this->user->lang['FORM_INVALID'] . adm_back_link($this->u_action), E_USER_WARNING);
         }
@@ -89,11 +94,11 @@ class main_module
                 break;
             
             case 'cat_del':
-                trigger_error('This part is not ready yet.' . adm_back_link($this->u_action)); 
+                $this->faq_delete($cat_id, $action); 
                 break;
             
             case 'faq_del':
-                trigger_error('This part is not ready yet.' . adm_back_link($this->u_action)); 
+                $this->faq_delete($faq_id, $action);
                 break;
             
             case 'cat_up':
@@ -174,10 +179,10 @@ class main_module
                 'TITLE'         => $cat['faq_question'],
                 'LANG_ISO'         => $cat['lang'],
                 'LANG'          => $languages[$cat['lang']]['lang_local_name'],
-                'U_MOVE_UP'     => $newblock ? false : $this->u_action . '&amp;action=cat_up&amp;cat_id=' . $cat['faq_id'] . '&amp;hash=' . generate_link_hash('ger_acp_faqmanager'),
-                'U_MOVE_DOWN'   => $can_down ? $this->u_action . '&amp;action=cat_down&amp;cat_id=' . $cat['faq_id'] . '&amp;hash=' . generate_link_hash('ger_acp_faqmanager') : false,
+                'U_MOVE_UP'     => $newblock ? false : $this->u_action . '&amp;action=cat_up&amp;cat_id=' . $cat['faq_id'] . '&amp;hash=' . generate_link_hash($this->link_hash),
+                'U_MOVE_DOWN'   => $can_down ? $this->u_action . '&amp;action=cat_down&amp;cat_id=' . $cat['faq_id'] . '&amp;hash=' . generate_link_hash($this->link_hash) : false,
                 'U_EDIT'        => $this->u_action . '&amp;action=cat_edit&amp;cat_id=' . $cat['faq_id'],
-                'U_DELETE'      => $this->u_action . '&amp;action=cat_del&amp;cat_id=' . $cat['faq_id'],
+                'U_DELETE'      => $this->u_action . '&amp;action=cat_del&amp;cat_id=' . $cat['faq_id'] . '&amp;hash=' . generate_link_hash($this->link_hash),
             ));
         }       
         return true;
@@ -230,9 +235,9 @@ class main_module
                     'ID'            => $row['faq_id'],
                     'FAQ_QUESTION'  => $row['faq_question'],
                     'FAQ_ANSWER'    => $row['faq_answer'],
-                    'U_MOVE_UP'     => $this->u_action . '&amp;action=faq_up&amp;cat_id=' . $cat_id . '&amp;faq_id=' . $row['faq_id'] . '&amp;hash=' . generate_link_hash('ger_acp_faqmanager'),
-                    'U_MOVE_DOWN'   => $this->u_action . '&amp;action=faq_down&amp;cat_id=' . $cat_id . '&amp;faq_id=' . $row['faq_id'] . '&amp;hash=' . generate_link_hash('ger_acp_faqmanager'),
-                    'U_DELETE'      => $this->u_action . '&amp;action=faq_del&amp;faq_id=' . $row['faq_id'],
+                    'U_MOVE_UP'     => $this->u_action . '&amp;action=faq_up&amp;cat_id=' . $cat_id . '&amp;faq_id=' . $row['faq_id'] . '&amp;hash=' . generate_link_hash($this->link_hash),
+                    'U_MOVE_DOWN'   => $this->u_action . '&amp;action=faq_down&amp;cat_id=' . $cat_id . '&amp;faq_id=' . $row['faq_id'] . '&amp;hash=' . generate_link_hash($this->link_hash),
+                    'U_DELETE'      => $this->u_action . '&amp;action=faq_del&amp;faq_id=' . $row['faq_id'] . '&amp;hash=' . generate_link_hash($this->link_hash),
                 ));
             }
         }
@@ -288,6 +293,40 @@ class main_module
             
         }
         trigger_error($this->user->lang('FM_ACP_SAVED') . adm_back_link($this->u_action)); 
+    }
+    
+        
+    /**
+     * Delete category or faq entry
+     * @param type $faq_id
+     * @param type $action
+     */
+    private function faq_delete($faq_id, $action)
+    {
+        $message_text = ($action == 'cat_del') ? 'FM_CAT_DELETED' : 'FM_FAQ_DELETED';
+        $confirm_text = $this->user->lang['CONFIRM_OPERATION'] . (($action == 'cat_del') ? ' ' . $this->user->lang['FM_CHILDREN_WILL_BE_DELETED'] : '');
+        if (confirm_box(true))
+        {
+            if ($this->handler->delete_faq($faq_id))
+            {
+                $json_response = new \phpbb\json_response;
+                $json_response->send(array(
+                    'MESSAGE_TITLE'	=> $this->user->lang['INFORMATION'],
+                    'MESSAGE_TEXT'	=> $this->user->lang[$message_text],
+                    'REFRESH_DATA'	=> array(
+                        'time'	=> 3
+                    )
+                ));          
+            }
+        }
+        else
+        {
+            // Confirm
+            confirm_box(false, $confirm_text, build_hidden_fields(array(
+                'faq_id'        => $faq_id,
+                'action'        => $action,
+            )));
+        }
     }
 
     /**

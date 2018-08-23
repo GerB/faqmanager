@@ -254,6 +254,27 @@ class handler
     }
 
     /**
+     * Delete entry with any children
+     * @param int $faq_id
+     * @return bool
+     */
+    public function delete_faq($faq_id)
+    {
+        // Check for children, delete those as well if applicable
+        $children = $this->get_cat_children($faq_id);
+        if ($children)
+        {
+            foreach ($children as $child)
+            {
+                $this->delete_faq($child['faq_id']);
+            }
+               
+        }
+        $sql = 'DELETE FROM ' . $this->faq_table . ' WHERE faq_id = ' . (int) $faq_id;
+        return $this->db->sql_query($sql);
+    }
+
+    /**
      * Delete all entries for given language
      * @param string $langcode
      * @return bool
@@ -262,7 +283,6 @@ class handler
     {
         if (!$this->validate_langcode($langcode))
         {
-            var_dump($langcode);die;
             return false;
         }
         $action = 'DELETE FROM ' . $this->faq_table. ' WHERE lang = "' . $langcode . '"';
