@@ -45,7 +45,7 @@ class faqpage
             return $this->helper->error('FM_NO_DATA');
         }
         
-        $found_switch = false;
+        $switch_column = $found_switch = false;
         $half_done = ceil((end($faq)['cnt'])/2);        
         reset($faq);
         
