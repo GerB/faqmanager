@@ -112,7 +112,7 @@ class handler
             $return[] = $row;
         }
         $this->db->sql_freeresult($result);
-        return $return;
+        return $return ?? false;
     }
     
     /**
