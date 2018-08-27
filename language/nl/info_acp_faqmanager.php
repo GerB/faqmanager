@@ -29,6 +29,7 @@ $lang = array_merge($lang, array(
 	'FM_FAQ_MANAGER'                => 'V&A Manager',
 	'FM_FAQ_DELETED'                => 'Vraag en antwoord verwijderd',
 	'FM_LANG'                       => 'Taal voor deze categorie en onderliggende vragen',
+	'FM_NO_CATEGORIES'              => 'Geen categorieën gevonden',
 	'FM_QUESTION'                   => 'Vraag',
 	'FM_QUESTION_ADD'               => 'Nieuwe vraag toevoegen aan categorie',
 ));

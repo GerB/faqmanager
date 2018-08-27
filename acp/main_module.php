@@ -132,7 +132,7 @@ class main_module
         
 		$this->template->assign_vars(array(
 			'U_ACTION'				=> $this->u_action,
-			'ACME_DEMO_GOODBYE'		=> $config['acme_demo_goodbye'],
+//			'ACME_DEMO_GOODBYE'		=> $config['acme_demo_goodbye'],
 		));
 	}
     
@@ -143,17 +143,24 @@ class main_module
     private function list_categories()
     {
         $categories = $this->handler->get_cat_children(0);
+        $languages = $this->handler->get_board_langs();
         if (empty($categories))
         {
+            $this->template->assign_vars(array(
+                'S_DISPLAY_CAT_LIST' => true,
+                'S_FIRST_LANG' => isset($languages[0]['lang_local_name']) ? $languages[0]['lang_local_name'] : '-'
+                ));             
             return false;
         }
-        $languages = $this->handler->get_board_langs();
-        
-        $curlang = $categories[0]['lang'];
-        $this->template->assign_vars(array(
-            'S_DISPLAY_CAT_LIST' => true,
-            'S_FIRST_LANG' => $languages[$curlang]['lang_local_name']
-            ));
+        else
+        {
+            $curlang = $categories[0]['lang'];
+            $this->template->assign_vars(array(
+                'S_DISPLAY_CAT_LIST' => true,
+                'S_FIRST_LANG' => $languages[$curlang]['lang_local_name']
+                ));     
+        }
+
                 
         foreach ($categories as $index => $cat)
         {

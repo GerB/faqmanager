@@ -3,7 +3,7 @@
     "type": "phpbb-extension",
     "description": "Manage FAQ entries through ACP",
     "homepage": "",
-    "version": "1.0.0-b1",
+    "version": "1.0.0-b2",
     "time": "2018-08-06",
     "license": "GPL-2.0-only",
     "authors": [

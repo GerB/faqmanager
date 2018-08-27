@@ -29,6 +29,7 @@ $lang = array_merge($lang, array(
 	'FM_FAQ_MANAGER'                => 'FAQ Manager',
 	'FM_FAQ_DELETED'                => 'FAQ entry deleted',
 	'FM_LANG'                       => 'Language for this category and its entries',
+	'FM_NO_CATEGORIES'              => 'No categories found',
 	'FM_QUESTION'                   => 'Question',
 	'FM_QUESTION_ADD'               => 'Add new question to this category',
 ));
