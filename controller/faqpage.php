@@ -53,14 +53,17 @@ class faqpage
         foreach ($faq as $block)
         {
             $questions = array();
-            foreach ($block['faq'] as $qa) 
+            if (isset($block['faq']))
             {
-                $questions[$qa['faq_question']] = $qa['faq_answer'];    
-            }
-            $this->help_manager->add_block($block['title'], $switch_column, $questions);
-            if (!$found_switch && $block['cnt'] > $half_done)
-            {
-                $switch_column = $found_switch = true;
+                foreach ($block['faq'] as $qa) 
+                {
+                    $questions[$qa['faq_question']] = $qa['faq_answer'];    
+                }
+                $this->help_manager->add_block($block['title'], $switch_column, $questions);
+                if (!$found_switch && $block['cnt'] > $half_done)
+                {
+                    $switch_column = $found_switch = true;
+                }
             }
         }
         
