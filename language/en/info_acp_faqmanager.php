@@ -19,6 +19,7 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
+    'FM_ACP_SAVED'                  => 'FAQ saved',
     'FM_ANSWER'                     => 'Answer',
     'FM_CAT_ADD'                    => 'Add category',
     'FM_CAT_DELETED'                => 'Category with children deleted',

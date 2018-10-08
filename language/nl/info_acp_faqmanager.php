@@ -19,6 +19,7 @@ if (empty($lang) || !is_array($lang))
 }
 
 $lang = array_merge($lang, array(
+    'FM_ACP_SAVED'                  => 'V&A opgeslagen',
     'FM_ANSWER'                     => 'Antwoord',
     'FM_CAT_ADD'                    => 'Cetegorie toevoegen',
     'FM_CAT_DELETED'                => 'Categorie en onderliggende vragen verwijderd',

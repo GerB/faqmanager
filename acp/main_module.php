@@ -276,16 +276,16 @@ class main_module
                 // Update relevant changes
                 $update = [
                     'faq_id' => $row['faq_id'],
-                    'faq_question' => $this->request->variable($row['faq_id'] . '_faq_question', '', true),
-                    'faq_answer' => $this->request->variable($row['faq_id'] . '_faq_answer', '', true),
+                    'faq_question' => html_entity_decode($this->request->variable($row['faq_id'] . '_faq_question', '', true)),
+                    'faq_answer' => html_entity_decode($this->request->variable($row['faq_id'] . '_faq_answer', '', true)),
                     'lang' => $newlang,
                 ];
                 $this->handler->store_faq($update);
             }
         }
         // Add new FAQ if provided
-        $new_q = $this->request->variable('new_faq_question', '', true);
-        $new_a = $this->request->variable('new_faq_answer', '', true);
+        $new_q = html_entity_decode($this->request->variable('new_faq_question', '', true));
+        $new_a = html_entity_decode($this->request->variable('new_faq_answer', '', true));
         if (!empty($new_q) && !empty($new_a))
         {
             $cur_max_order = $this->handler->get_max_order($cat_id, $newlang);
