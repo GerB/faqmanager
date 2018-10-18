@@ -203,7 +203,7 @@ class main_module
         $cur_max_order = $this->handler->get_max_order(0, $this->user->data['user_lang']);
         
         $insert = [
-            'faq_question' => $this->request->variable('faq_question', '', true),
+            'faq_question' => html_entity_decode($this->request->variable('faq_question', '', true), ENT_NOQUOTES, "UTF-8"),
             'faq_answer' => '',
             'lang' => $this->user->data['user_lang'],
             'cat_id' => 0,
@@ -261,7 +261,7 @@ class main_module
         $newlang = $this->request->variable('cat_lang', '');
         $main = [
             'faq_id' => $cat_id,
-            'faq_question' => $this->request->variable('cat_title', '', true),
+            'faq_question' => html_entity_decode($this->request->variable('cat_title', '', true), ENT_NOQUOTES, "UTF-8"),
             'lang' => $newlang,
             'cat_id' => 0,
         ];
@@ -276,8 +276,8 @@ class main_module
                 // Update relevant changes
                 $update = [
                     'faq_id' => $row['faq_id'],
-                    'faq_question' => html_entity_decode($this->request->variable($row['faq_id'] . '_faq_question', '', true)),
-                    'faq_answer' => html_entity_decode($this->request->variable($row['faq_id'] . '_faq_answer', '', true)),
+                    'faq_question' => html_entity_decode($this->request->variable($row['faq_id'] . '_faq_question', '', true), ENT_NOQUOTES, "UTF-8"),
+                    'faq_answer' => html_entity_decode($this->request->variable($row['faq_id'] . '_faq_answer', '', true), ENT_NOQUOTES, "UTF-8"),
                     'lang' => $newlang,
                 ];
                 $this->handler->store_faq($update);
