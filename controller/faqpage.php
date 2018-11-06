@@ -39,7 +39,7 @@ class faqpage
     public function handle()
     {
         $this->language->add_lang('common', 'ger/faqmanager');
-        $faq = $this->handler->get_faq_data($this->user->data['user_lang']);
+        $faq = $this->handler->get_faq_data($this->language->get_used_language());
         if (!$faq)
         {
             return $this->helper->error('FM_NO_DATA');
