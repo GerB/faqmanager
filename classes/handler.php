@@ -195,33 +195,47 @@ class handler
      */
     public function move_up_down($cat_id, $faq_id, $order)
     {
+        // Look what we have
         $select_array = [
-            'SELECT'    => 'sort_order AS current_order',
+            'SELECT'    => 'sort_order AS current_order, lang',
             'FROM'      => [$this->faq_table => 'fm'],
             'WHERE'     => 'faq_id = ' . (int) $faq_id,
             'ORDER_BY'  => 'lang, fm.sort_order ASC, fm.faq_question ASC',  
         ];
         $result = $this->db->sql_query($this->db->sql_build_query('SELECT', $select_array));
-        $current_order = (int) $this->db->sql_fetchfield('current_order');
+        $faq = $this->db->sql_fetchrow($result);
+        $current_order = (int) $faq['current_order'];
+        $lang =  $faq['lang'];
         $this->db->sql_freeresult($result);
 
-        $switch_order_id = ($order == 'down') ? $current_order + 1 : $current_order - 1;
+        // Decide what to switch with
+        $look = ($order == 'down') ? ' > ' : ' < ';
+        $sort = ($order == 'down') ? 'ASC' : 'DESC';
         
+        $select_array = [
+            'SELECT'    => 'faq_id, sort_order',
+            'FROM'      => [$this->faq_table => 'fm'],
+            'WHERE'     => 'cat_id = ' . (int) $cat_id . ' AND sort_order ' . $look . $current_order . ' AND lang = "' . $lang . '"', 
+            'ORDER_BY'  => 'fm.sort_order '. $sort,  
+        ];
+        $result = $this->db->sql_query($this->db->sql_build_query('SELECT', $select_array));
+        $switch = $this->db->sql_fetchrow($result);        
+        $this->db->sql_freeresult($result);
+        
+        // Switch the switch
         $action =  'UPDATE ' . $this->faq_table . 
                 ' SET sort_order = ' . $current_order .
-                ' WHERE faq_id <>  ' . (int) $faq_id .
-                ' AND sort_order = ' . (int) $switch_order_id .
+                ' WHERE faq_id =  ' . (int) $switch['faq_id'] .
                 ' AND cat_id = ' . (int) $cat_id;
         $this->db->sql_query($action);
 
         $move_executed = (bool) $this->db->sql_affectedrows();
         if ($move_executed)
         {
-            
+            // Switch given faq as well
             $sql =  'UPDATE ' . $this->faq_table . 
-                    ' SET sort_order = ' . $switch_order_id .
+                    ' SET sort_order = ' . $switch['sort_order'] .
                     ' WHERE faq_id =  ' . (int) $faq_id .
-                    ' AND sort_order = ' . (int) $current_order .
                     ' AND cat_id = ' . (int) $cat_id;
             $this->db->sql_query($sql); 
         }
