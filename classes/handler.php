@@ -38,7 +38,7 @@ class handler
         $sql_array = [
             'SELECT'    => 'fm.*',
             'FROM'      => [$this->faq_table => 'fm'],
-            'WHERE'     => 'lang = "' . $langcode . '" AND cat_id = 0',
+            'WHERE'     => 'lang = "' . $this->db->sql_escape($langcode) . '" AND cat_id = 0',
             'ORDER_BY'  => 'fm.sort_order ASC, fm.faq_question ASC',  
         ];
         
@@ -50,7 +50,7 @@ class handler
             $sql_ary = [
                 'SELECT'    => 'fm.*',
                 'FROM'      => [$this->faq_table => 'fm'],
-                'WHERE'     => 'lang = "' . $langcode . '" AND cat_id = ' . $row['faq_id'],
+                'WHERE'     => 'lang = "' . $this->db->sql_escape($langcode) . '" AND cat_id = ' . $row['faq_id'],
                 'ORDER_BY'  => 'fm.sort_order ASC, fm.faq_question ASC',  
             ];
             $qa = $this->db->sql_query($this->db->sql_build_query('SELECT', $sql_ary));
@@ -215,7 +215,7 @@ class handler
         $select_array = [
             'SELECT'    => 'faq_id, sort_order',
             'FROM'      => [$this->faq_table => 'fm'],
-            'WHERE'     => 'cat_id = ' . (int) $cat_id . ' AND sort_order ' . $look . $current_order . ' AND lang = "' . $lang . '"', 
+            'WHERE'     => 'cat_id = ' . (int) $cat_id . ' AND sort_order ' . $look . $current_order . ' AND lang = "' . $this->db->sql_escape($lang) . '"', 
             'ORDER_BY'  => 'fm.sort_order '. $sort,  
         ];
         $result = $this->db->sql_query($this->db->sql_build_query('SELECT', $select_array));
@@ -257,7 +257,7 @@ class handler
         $select_array = [
             'SELECT'    => 'sort_order',
             'FROM'      => [$this->faq_table => 'fm'],
-            'WHERE'     => 'cat_id = ' . (int) $cat_id . ' AND lang = "' . $langcode . '"',
+            'WHERE'     => 'cat_id = ' . (int) $cat_id . ' AND lang = "' . $this->db->sql_escape($langcode) . '"',
             'ORDER_BY'  => 'sort_order DESC',  
         ];
         $result = $this->db->sql_query($this->db->sql_build_query('SELECT', $select_array));
@@ -299,7 +299,7 @@ class handler
         {
             return false;
         }
-        $action = 'DELETE FROM ' . $this->faq_table. ' WHERE lang = "' . $langcode . '"';
+        $action = 'DELETE FROM ' . $this->faq_table. ' WHERE lang = "' . $this->db->sql_escape($langcode) . '"';
         return $this->db->sql_query($action);
     }
 }

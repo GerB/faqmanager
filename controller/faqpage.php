@@ -78,16 +78,4 @@ class faqpage
 
 		return $this->helper->render('/faq_body.html', $title);
     }
-    
-    private function switch_col($faq)
-    {
-        $total = end($faq)['cnt'];
-        var_dump($total);
-        foreach ($faq as $block_id => $block)
-        {
-            $total += count($block['faq']);
-//            $faq[$block_id['cnt'] = $total;
-        }
-        
-    }
 }
