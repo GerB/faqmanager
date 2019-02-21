@@ -28,7 +28,7 @@ class main_module
     public function main($id, $mode)
 	{
         // Grab all the basics
-		global $config, $request, $template, $user, $phpbb_container;
+		global $request, $template, $user, $phpbb_container;
         $this->user = $user;
 		$this->user->add_lang_ext('ger/faqmanager', 'common');
         
@@ -132,7 +132,6 @@ class main_module
         
 		$this->template->assign_vars(array(
 			'U_ACTION'				=> $this->u_action,
-//			'ACME_DEMO_GOODBYE'		=> $config['acme_demo_goodbye'],
 		));
 	}
     

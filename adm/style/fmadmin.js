@@ -12,7 +12,7 @@ phpbb.addAjaxCallback('faq_down', function(res) {
 		$secondTr = $firstTr.next();
 
 	$firstTr.insertAfter($secondTr);
-    setMoveBtns()
+    setMoveBtns();
 });
 
 phpbb.addAjaxCallback('faq_up', function(res) {
@@ -24,13 +24,13 @@ phpbb.addAjaxCallback('faq_up', function(res) {
 		$firstTr = $secondTr.prev();
 
 	$secondTr.insertBefore($firstTr);
-    setMoveBtns()
+    setMoveBtns();
 });
 
 phpbb.addAjaxCallback('faq_delete', function(res) {
 	if (res.SUCCESS !== false) {
 		$(this).parents('fieldset').remove();
-        setMoveBtns()
+        setMoveBtns();
 	}
 });
 function setMoveBtns() {
